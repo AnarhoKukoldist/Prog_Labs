@@ -116,7 +116,7 @@ int int_vector_resize(struct IntVector *v, size_t new_size) {
 	else if (new_size == v->size)
         return 0;
     else
-        printf("Error: use int_vector_shrink_to_fit function");
+        printf("Error: use int_vector_shrink_to_fit function\n");
 }
 
 int int_vector_reserve(struct IntVector *v, size_t new_capacity) {
