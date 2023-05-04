@@ -100,23 +100,34 @@ int int_vector_shrink_to_fit(struct IntVector *v) {
 }
 
 int int_vector_resize(struct IntVector *v, size_t new_size) {
-	if (v->size < new_size) {
-		if (v->capacity < new_size) {
-			v->capacity = new_size;
-			v->data = realloc(v->data, v->capacity * sizeof(int));
-			if (!(v->data))
-				return -1;
-			size_t i = v->size;
-			for (; i < v->capacity; i++) {
-				v->data[i] = 0;
-			}
-			return 0;
+	if ((v->size < new_size) && (v->capacity > new_size)) {
+		size_t i = v->size;
+		for (; i < new_size; i++) {
+			v->data[i] = 0;
 		}
+		v->size = new_size;
+		return 0;
 	}
-	else if (new_size == v->size)
-        return 0;
-    else
-        printf("Error: use int_vector_shrink_to_fit function\n");
+	if (v->capacity < new_size) {
+		v->capacity = new_size;
+		v->data = realloc(v->data, v->capacity * sizeof(int));
+		if (!(v->data))
+			return -1;
+		size_t i = v->size;
+		for (; i < v->capacity; i++) {
+			v->data[i] = 0;
+		}
+		v->size = new_size;
+		return 0;
+	}
+	if (new_size == v->size)
+        	return 0;
+	if (v->size > new_size) {
+		v->size = new_size;
+		return 0;
+	}
+    	else
+        	printf("Error: use int_vector_shrink_to_fit function\n");
 }
 
 int int_vector_reserve(struct IntVector *v, size_t new_capacity) {
